@@ -8,7 +8,7 @@ A React static web app that converts images to WebP format entirely in your brow
 - **Batch conversion** — convert multiple images at once
 - **Rich options:**
   - Quality slider (1–100%)
-  - Lossless mode
+  - High-quality mode (uses WebP compression; output is not guaranteed lossless)
   - Resize: target width, height, maintain aspect ratio
 - **Preview toggle** — switch between original and converted image
 - **File size comparison** — see exactly how much space you saved

@@ -17,7 +17,7 @@ export default function OptionsPanel({ options, onChange }) {
       <div className="option-group">
         <label className="option-label">
           <span>Quality</span>
-          <span className="option-value">{lossless ? 'Lossless' : `${quality}%`}</span>
+          <span className="option-value">{lossless ? 'High Quality' : `${quality}%`}</span>
         </label>
         <input
           type="range"
@@ -37,15 +37,22 @@ export default function OptionsPanel({ options, onChange }) {
       {/* Lossless */}
       <div className="option-group">
         <label className="toggle-label">
-          <span className="option-label-text">Lossless Mode</span>
-          <div className="toggle-description">Preserve all image data (larger file)</div>
+          <span className="option-label-text">High Quality Mode</span>
+          <div className="toggle-description">Maximum quality encoding (output is not guaranteed lossless)</div>
           <div
             className={`toggle ${lossless ? 'active' : ''}`}
             onClick={() => set('lossless', !lossless)}
             role="switch"
             aria-checked={lossless}
             tabIndex={0}
-            onKeyDown={(e) => e.key === 'Enter' && set('lossless', !lossless)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                if (e.key !== 'Enter') {
+                  e.preventDefault();
+                }
+                set('lossless', !lossless);
+              }
+            }}
           >
             <div className="toggle-thumb" />
           </div>
