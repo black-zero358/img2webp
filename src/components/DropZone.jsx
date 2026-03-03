@@ -54,9 +54,7 @@ export default function DropZone({ onFiles }) {
       tabIndex={0}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
-          if (e.key !== 'Enter') {
-            e.preventDefault();
-          }
+          e.preventDefault();
           inputRef.current?.click();
         }
       }}

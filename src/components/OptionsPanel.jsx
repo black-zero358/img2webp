@@ -47,9 +47,7 @@ export default function OptionsPanel({ options, onChange }) {
             tabIndex={0}
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
-                if (e.key !== 'Enter') {
-                  e.preventDefault();
-                }
+                e.preventDefault();
                 set('lossless', !lossless);
               }
             }}
