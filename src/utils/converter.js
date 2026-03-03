@@ -58,11 +58,16 @@ export async function convertToWebP(file, options = {}) {
         canvas.height = targetH;
 
         const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          URL.revokeObjectURL(url);
+          reject(new Error('Canvas 2D context not available'));
+          return;
+        }
         ctx.drawImage(img, 0, 0, targetW, targetH);
 
-        // Pass quality only for lossy encoding; omitting it lets the browser
-        // use its default (which for WebP is typically equivalent to lossless).
-        const qualityValue = lossless ? undefined : quality;
+        // Use quality=1 for high-quality mode; note that canvas.toBlob does
+        // not guarantee lossless output regardless of the quality value.
+        const qualityValue = lossless ? 1 : quality;
 
         canvas.toBlob(
           (blob) => {

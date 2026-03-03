@@ -559,7 +559,9 @@
   transition: opacity var(--transition), background var(--transition);
 }
 
-.image-card:hover .remove-btn {
+.image-card:hover .remove-btn,
+.remove-btn:focus-visible,
+.image-card:focus-within .remove-btn {
   opacity: 1;
 }
 

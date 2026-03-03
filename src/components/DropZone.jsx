@@ -7,8 +7,15 @@ export default function DropZone({ onFiles }) {
 
   const handleFiles = useCallback(
     (files) => {
+      if (!files) {
+        return;
+      }
       const imageFiles = Array.from(files).filter((f) =>
-        f.type.startsWith('image/')
+        f.type.startsWith('image/') ||
+        (f.type === '' &&
+          SUPPORTED_EXTENSIONS.split(',').some((ext) =>
+            f.name.toLowerCase().endsWith(ext.trim())
+          ))
       );
       if (imageFiles.length > 0) onFiles(imageFiles);
     },
@@ -45,7 +52,12 @@ export default function DropZone({ onFiles }) {
       onClick={() => inputRef.current?.click()}
       role="button"
       tabIndex={0}
-      onKeyDown={(e) => e.key === 'Enter' && inputRef.current?.click()}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          inputRef.current?.click();
+        }
+      }}
       aria-label="Upload images"
     >
       <div className="drop-zone-icon">

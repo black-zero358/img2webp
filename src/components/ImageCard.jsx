@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { formatBytes, getWebPFilename, downloadBlob } from '../utils/converter';
 
 const STATUS_ICON = {
@@ -28,7 +28,9 @@ export default function ImageCard({ item, onRemove }) {
 
   const savings =
     result
-      ? Math.round(((result.originalSize - result.webpSize) / result.originalSize) * 100)
+      ? (result.originalSize > 0
+        ? Math.round(((result.originalSize - result.webpSize) / result.originalSize) * 100)
+        : 0)
       : null;
 
   const handleDownload = () => {
@@ -37,8 +39,16 @@ export default function ImageCard({ item, onRemove }) {
     }
   };
 
-  const convertedObjectUrl =
-    result?.blob ? URL.createObjectURL(result.blob) : null;
+  const convertedObjectUrl = useMemo(
+    () => (result?.blob ? URL.createObjectURL(result.blob) : null),
+    [result]
+  );
+
+  useEffect(() => {
+    return () => {
+      if (convertedObjectUrl) URL.revokeObjectURL(convertedObjectUrl);
+    };
+  }, [convertedObjectUrl]);
 
   return (
     <div className={`image-card ${status}`}>
