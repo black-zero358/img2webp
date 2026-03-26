@@ -1,5 +1,8 @@
+import { useLang } from '../LangContext.jsx';
+
 export default function OptionsPanel({ options, onChange }) {
   const { quality, lossless, width, height, keepAspectRatio } = options;
+  const { t } = useLang();
 
   const set = (key, val) => onChange({ ...options, [key]: val });
 
@@ -10,14 +13,14 @@ export default function OptionsPanel({ options, onChange }) {
           <path strokeLinecap="round" strokeLinejoin="round"
             d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" />
         </svg>
-        Conversion Options
+        {t('optionsTitle')}
       </h2>
 
       {/* Quality */}
       <div className="option-group">
         <label className="option-label">
-          <span>Quality</span>
-          <span className="option-value">{lossless ? 'Lossless' : `${quality}%`}</span>
+          <span>{t('quality')}</span>
+          <span className="option-value">{lossless ? t('lossless') : `${quality}%`}</span>
         </label>
         <input
           type="range"
@@ -29,16 +32,16 @@ export default function OptionsPanel({ options, onChange }) {
           className="range-slider"
         />
         <div className="range-labels">
-          <span>Low</span>
-          <span>High</span>
+          <span>{t('low')}</span>
+          <span>{t('high')}</span>
         </div>
       </div>
 
       {/* Lossless */}
       <div className="option-group">
         <label className="toggle-label">
-          <span className="option-label-text">Lossless Mode</span>
-          <div className="toggle-description">Preserve all image data (larger file)</div>
+          <span className="option-label-text">{t('losslessMode')}</span>
+          <div className="toggle-description">{t('losslessDesc')}</div>
           <div
             className={`toggle ${lossless ? 'active' : ''}`}
             onClick={() => set('lossless', !lossless)}
@@ -54,16 +57,16 @@ export default function OptionsPanel({ options, onChange }) {
 
       {/* Resize */}
       <div className="option-group">
-        <div className="option-label-text">Resize</div>
+        <div className="option-label-text">{t('resize')}</div>
         <div className="resize-inputs">
           <div className="resize-field">
-            <label htmlFor="resize-w">Width (px)</label>
+            <label htmlFor="resize-w">{t('widthPx')}</label>
             <input
               id="resize-w"
               type="number"
               min={1}
               max={16384}
-              placeholder="auto"
+              placeholder={t('autoPlaceholder')}
               value={width ?? ''}
               onChange={(e) =>
                 set('width', e.target.value ? Number(e.target.value) : null)
@@ -73,13 +76,13 @@ export default function OptionsPanel({ options, onChange }) {
           </div>
           <div className="resize-separator">×</div>
           <div className="resize-field">
-            <label htmlFor="resize-h">Height (px)</label>
+            <label htmlFor="resize-h">{t('heightPx')}</label>
             <input
               id="resize-h"
               type="number"
               min={1}
               max={16384}
-              placeholder="auto"
+              placeholder={t('autoPlaceholder')}
               value={height ?? ''}
               onChange={(e) =>
                 set('height', e.target.value ? Number(e.target.value) : null)
@@ -94,7 +97,7 @@ export default function OptionsPanel({ options, onChange }) {
             checked={keepAspectRatio}
             onChange={(e) => set('keepAspectRatio', e.target.checked)}
           />
-          <span>Maintain aspect ratio</span>
+          <span>{t('maintainAspect')}</span>
         </label>
       </div>
     </div>
