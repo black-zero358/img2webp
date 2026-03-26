@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { formatBytes, getWebPFilename, downloadBlob } from '../utils/converter';
+import { useLang } from '../LangContext.jsx';
 
 const STATUS_ICON = {
   idle: null,
@@ -25,6 +26,7 @@ const STATUS_ICON = {
 export default function ImageCard({ item, onRemove }) {
   const { file, status, result, error, previewUrl } = item;
   const [showConverted, setShowConverted] = useState(false);
+  const { t } = useLang();
 
   const savings =
     result
@@ -53,17 +55,17 @@ export default function ImageCard({ item, onRemove }) {
           <button
             className="preview-toggle"
             onClick={() => setShowConverted((v) => !v)}
-            title={showConverted ? 'Show original' : 'Show converted'}
+            title={showConverted ? t('showOriginal') : t('showConverted')}
           >
-            {showConverted ? 'Original' : 'WebP'}
+            {showConverted ? t('original') : t('webp')}
           </button>
         )}
 
         <button
           className="remove-btn"
           onClick={onRemove}
-          title="Remove"
-          aria-label="Remove image"
+          title={t('remove')}
+          aria-label={t('removeAriaLabel')}
         >
           ×
         </button>
@@ -76,7 +78,7 @@ export default function ImageCard({ item, onRemove }) {
         </div>
 
         {status === 'converting' && (
-          <div className="card-status converting">Converting…</div>
+          <div className="card-status converting">{t('convertingStatus')}</div>
         )}
 
         {status === 'error' && (
@@ -86,21 +88,21 @@ export default function ImageCard({ item, onRemove }) {
         {status === 'done' && result && (
           <div className="card-stats">
             <div className="stat">
-              <span className="stat-label">Original</span>
+              <span className="stat-label">{t('original')}</span>
               <span className="stat-value">{formatBytes(result.originalSize)}</span>
             </div>
             <div className="stat">
-              <span className="stat-label">WebP</span>
+              <span className="stat-label">{t('webp')}</span>
               <span className="stat-value">{formatBytes(result.webpSize)}</span>
             </div>
             <div className={`stat saving ${savings >= 0 ? 'positive' : 'negative'}`}>
-              <span className="stat-label">Saved</span>
+              <span className="stat-label">{t('saved')}</span>
               <span className="stat-value">
                 {savings >= 0 ? `-${savings}%` : `+${Math.abs(savings)}%`}
               </span>
             </div>
             <div className="stat">
-              <span className="stat-label">Size</span>
+              <span className="stat-label">{t('size')}</span>
               <span className="stat-value">{result.width}×{result.height}</span>
             </div>
           </div>
@@ -112,12 +114,12 @@ export default function ImageCard({ item, onRemove }) {
               <path strokeLinecap="round" strokeLinejoin="round"
                 d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
             </svg>
-            Download WebP
+            {t('downloadWebp')}
           </button>
         )}
 
         {status === 'idle' && (
-          <div className="card-status idle">Ready to convert</div>
+          <div className="card-status idle">{t('readyToConvert')}</div>
         )}
       </div>
     </div>

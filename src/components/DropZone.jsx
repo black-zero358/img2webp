@@ -1,9 +1,11 @@
 import { useRef, useState, useCallback } from 'react';
 import { SUPPORTED_EXTENSIONS } from '../utils/converter';
+import { useLang } from '../LangContext.jsx';
 
 export default function DropZone({ onFiles }) {
   const [dragging, setDragging] = useState(false);
   const inputRef = useRef(null);
+  const { t } = useLang();
 
   const handleFiles = useCallback(
     (files) => {
@@ -46,7 +48,7 @@ export default function DropZone({ onFiles }) {
       role="button"
       tabIndex={0}
       onKeyDown={(e) => e.key === 'Enter' && inputRef.current?.click()}
-      aria-label="Upload images"
+      aria-label={t('dropAriaLabel')}
     >
       <div className="drop-zone-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -54,11 +56,9 @@ export default function DropZone({ onFiles }) {
             d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
         </svg>
       </div>
-      <p className="drop-zone-title">Drag &amp; drop images here</p>
-      <p className="drop-zone-subtitle">or click to browse files</p>
-      <p className="drop-zone-formats">
-        Supports: JPG, PNG, GIF, BMP, SVG, TIFF, AVIF, WebP, ICO
-      </p>
+      <p className="drop-zone-title">{t('dropTitle')}</p>
+      <p className="drop-zone-subtitle">{t('dropSubtitle')}</p>
+      <p className="drop-zone-formats">{t('dropFormats')}</p>
       <input
         ref={inputRef}
         type="file"
